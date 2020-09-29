@@ -1,0 +1,23 @@
+{% extends "base_template.html" %}
+{% block title %}{{title}}{% endblock%}
+{% block content %}
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Nilai Local Best</h4>
+                </div>
+                <div class="table-responsive px-3">
+                    <pre>
+                        <code>
+{% for i in data %}{{loop.index}}
+{% for j in i[0] %}local_best&nbsp;{{j}}<br>{% endfor %}
+{% endfor %}
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock%}

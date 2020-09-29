@@ -1,0 +1,75 @@
+{% extends "base_template.html" %}
+{% block title %}Penampil Algoritma Particle Swarm Optimization{% endblock%}
+{% block content %}
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Parameter</h4>
+                </div>
+                <div class="table-responsive">
+                    \[ \begin{array}{lcr}
+                    \mbox{Fungsi fitnes:} & min f(x)=(100-x)^2 & \text{Dimana } 0\le x \le 100\\
+                    \mbox{Rumus Teta:} & \theta(i) = \theta_{max}-(\frac{\theta_{max}-\theta_{min}}{i_{max}})i & \text{nilai } \theta_{max}=0.9 \text{ dan } \theta_{min}=0.4\\
+                    \mbox{Maksimal Iterasi:} & 20\\
+                    \mbox{Velocity Partikel:} & 
+                    \begin{bmatrix}\\
+                    {% for i in data[3:] %}
+                        {{'0.'}}\\
+                    {% endfor %}
+                    \end{bmatrix}\\
+                    \\
+                    \mbox{Nilai posisi Partikel:} & 
+                    \begin{bmatrix}\\
+                    {% for i in data[3:] %}
+                        {{i[index+1]}}{{'\\\\'}}
+                    {% endfor %}
+                    \end{bmatrix}\end{array}\]
+                    <form method="POST">
+                        <div>
+                            <label>Pilih Sensor {{sensor}}</label>
+                            <select class="form-control" name="sensor">
+                                {% for file in files %}
+                                    <option value="{{file}}" {%if sensor==file%}selected{%endif%}>{{file[:-5]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            
+                            <label>Pilih rentang waktu 12 jam ke</label>
+                            <select class="form-control" name="index">
+                                {% for i in data[2][:-1] %}
+                                   <option value="{{ i | int}}" {%if i|int==index%}selected{%endif%}>{{ i | int+1 }}</option> 
+                                {% endfor %}
+                            </select>
+                            <script>
+                                const sensor = document.querySelector('[name=sensor]');
+                                const data = {
+                                    {% for file in files %}
+                                        "{{file}}":{{alldata[loop.index0][2][:-1]|length}}{% if loop.index < files|length %},{%endif%}
+                                    {% endfor %}
+                                };
+                                sensor.addEventListener('change', (event)=>{
+                                    const index = document.querySelector('[name=index]');
+                                    let options = document.querySelectorAll('[name=index] option');
+                                    for(let i  of options) i.remove();
+
+                                    for(let i=0;i<data[event.target.value];i++){
+                                        var opt = document.createElement('option');
+                                        opt.text = i+1;
+                                        opt.value = i;
+                                        index.appendChild(opt);
+                                    }
+                                });
+                            </script>
+                            
+                        </div>
+                        <button class="btn btn-success">Optimasi</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock%}

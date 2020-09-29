@@ -1,0 +1,47 @@
+{% extends "base_template.html" %}
+{% block title %}{{title}}{% endblock%}
+{% block content %}
+    {% for file in files %}
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Data Kelembaban Tanah: {{file}}</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr class="bg-dark text-white">
+                                <th class="text-center border-top-0" rowspan="2">Jam Ke-</th>
+                                <th class="text-center border-top-0" colspan="{{data[loop.index0][0] | length - 1}}">12 Jam ke-</th>
+                            </tr>
+                            <tr class="bg-secondary text-white">
+                                {% for i in data[loop.index0][0] %}
+                                    {%if loop.index0>0 %}
+                                        <th class="text-center">{{loop.index0}}</th>
+                                    {%endif%}
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in data[loop.index0][3:] %}
+                            <tr>
+                                {% for j in i %}
+                                    {%if loop.index0 == 0%}
+                                        <td class="text-center bg-secondary text-white">{{j|int}}</td>
+                                    {%else%}
+                                        <td class="text-center">{{j}}</td>
+                                    {% endif %}
+                                {% endfor%}
+                            </tr>
+                            {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+   
+{% endblock%}

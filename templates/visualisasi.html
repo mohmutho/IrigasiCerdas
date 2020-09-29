@@ -1,0 +1,77 @@
+{% extends "base_template.html" %}
+{% block title %}{{title}}{% endblock%}
+{% block content %}
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Visualisasi</h4>
+                </div>
+                <div class="table-responsive px-3">
+                    <p>Nilai Global Best: {{global_best}}</p>
+                    <p>Iteration : {{data[0]|length}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for i in data %}
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Visualisasi pada iterasi ke - {{loop.index}}</h4>
+                </div>
+                <div class="table-responsive px-3">
+                    <div id="vis-{{loop.index}}" style="height: 400px;"></div>
+                    <!-- <div>Local: {{i[0]}}</div>
+                    <div>Global: {{i[1]}}</div> -->
+                    <script>
+                        anychart.onDocumentReady(function () {
+
+                            // create data
+                            var data1 = {{i[0]}};
+                            var data2 = {{i[1]}};
+
+                            // create a chart
+                            var chart = anychart.scatter();
+
+                            // create a marker series and set the data
+                            var series1 = chart.marker(data1);
+                            series1.name('Local Best');
+                            var series2 = chart.marker(data2).fill("#f96000", 1);
+                            series2.name('Global Best');
+                            // enable major grids
+                            chart.xGrid(true);
+                            chart.yGrid(true);
+                            chart.yScale().minimum(-150);
+
+                            // configure the visual settings of major grids
+                            chart.xGrid().stroke({color: "#85adad", thickness: 0.7});
+                            chart.yGrid().stroke({color: "#85adad", thickness: 0.7});
+
+                            // enable minor grids
+                            chart.xMinorGrid(true);
+                            chart.yMinorGrid(true);
+
+                            // configure the visual settings of minor grids
+                            chart.xMinorGrid().stroke({color: "#85adad", thickness: 0.3, dash: 5});
+                            chart.yMinorGrid().stroke({color: "#85adad", thickness: 0.3, dash: 5});
+
+                            // set the chart title
+                            chart.title("Visualisasi pada iterasi ke {{loop.index}}");
+
+                            // set the container id
+                            chart.container("vis-{{loop.index}}");
+
+                            // initiate drawing the chart
+                            chart.draw();
+                            });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock%}
